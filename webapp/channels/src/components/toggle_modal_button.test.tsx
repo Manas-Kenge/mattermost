@@ -15,36 +15,36 @@ jest.mock('react-redux', () => ({
     useDispatch: () => jest.fn(),
 }));
 
-class TestModal extends React.PureComponent {
-    render() {
-        return (
-            <Modal
-                show={true}
-                onHide={jest.fn()}
-            >
-                <Modal.Header closeButton={true}/>
-                <Modal.Body/>
-            </Modal>
-        );
-    }
-}
+const TestModal = () => (
+    <Modal
+        show={true}
+        onHide={jest.fn()}
+    >
+        <Modal.Header closeButton={true} />
+        <Modal.Body />
+    </Modal>
+);
+
+const ToggleModalButtonTest = () => {
+    return (
+        <ToggleModalButton
+            ariaLabel={'Delete Channel'}
+            id='channelDelete'
+            role='menuitem'
+            modalId={ModalIdentifiers.DELETE_CHANNEL}
+            dialogType={TestModal}
+        >
+            <FormattedMessage
+                id='channel_header.delete'
+                defaultMessage='Delete Channel'
+            />
+        </ToggleModalButton>
+    );
+};
 
 describe('components/ToggleModalButton', () => {
     test('component should match snapshot', () => {
-        const wrapper = mountWithIntl(
-            <ToggleModalButton
-                ariaLabel={'Delete Channel'}
-                id='channelDelete'
-                role='menuitem'
-                modalId={ModalIdentifiers.DELETE_CHANNEL}
-                dialogType={TestModal}
-            >
-                <FormattedMessage
-                    id='channel_header.delete'
-                    defaultMessage='Delete Channel'
-                />
-            </ToggleModalButton>,
-        );
+        const wrapper = mountWithIntl(<ToggleModalButtonTest />);
 
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find('button span').first().html()).toBe('<span>Delete Channel</span>');
